@@ -34,7 +34,9 @@ namespace DatingApp.Controllers
             //validate request
             userForRegisterDTO.Username = userForRegisterDTO.Username.ToLower();
             if (await _repo.UserExists(userForRegisterDTO.Username))
+            {
                 return BadRequest("Username already exists");
+            }
             var userToCreate = new User
             {
                 Username = userForRegisterDTO.Username
@@ -43,9 +45,10 @@ namespace DatingApp.Controllers
 
             return StatusCode(201);
         }
-        [HttpPost("Login")]
+        [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDTO userForLoginDTO)
         {
+           // throw new Exception("Computer says no!");
             var userFromRepo = await _repo.Login(userForLoginDTO.Username.ToLower(), userForLoginDTO.Password);
 
             if (userFromRepo == null)
@@ -71,10 +74,11 @@ namespace DatingApp.Controllers
             var tokenHandler = new JwtSecurityTokenHandler();
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
+            var tokenString = tokenHandler.WriteToken(token);
 
             return Ok(new
             {
-                token = tokenHandler.WriteToken(token)
+                tokenString
             });
         }
 
