@@ -74,12 +74,12 @@ namespace DatingApp.Controllers
             var tokenHandler = new JwtSecurityTokenHandler();
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            var tokenString = tokenHandler.WriteToken(token);
+            
 
             return Ok(new
             {
-                tokenString
-            });
+                token=tokenHandler.WriteToken(token)
+        });
         }
 
     }
